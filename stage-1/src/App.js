@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import axios from "axios";
 import StoreFront from "./Components/StoreFront/StoreFront";
 import ShoppingCart from "./Components/ShoppingCart/ShoppingCart";
 import NavBar from "./Components/NavBar/NavBar";
+
 
 class App extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class App extends Component {
     axios
       .get("https://practiceapi.devmountain.com/products/")
       .then(response => {
+        console.log("response: ",response)
         this.setState({
           products: response.data
         });
@@ -48,15 +51,15 @@ class App extends Component {
     }
   }
   render() {
-    const { products, showCart } = this.state;
+    const { cart, products, showCart } = this.state;
     return (
       <div className="App">
         <NavBar navigate={this.navigate} />
         <div className="main-container">
           {showCart ? (
-            <ShoppingCart cart={cart} />
+            <ShoppingCart removeFromCart={this.removeFromCart} cart={cart} />
           ) : (
-            <StoreFront products={products} />
+            <StoreFront addToCart={this.addToCart} products={products} />
           )}
         </div>
       </div>
